@@ -38,6 +38,13 @@ save folder path: /runs/${DATES}_${HOSTNAME} e.g. Mar03_13-31-00_hostname
 
 ## How to test on ConvLab
 
+**Things changed from the original:**
+- ConvLab/models/v1 and v4/config.json에서
+  “summary_type”: ~~“token_ids”~~ “cls_index”
+- ConvLab/convlab/modules/e2e/multiwoz/Transformer/pytorch_transformers/modeling_utils.py에서 767번째 줄
+  elif self.summary_type == ~~‘token_ids’~~ ‘cls_index’:
+- runs/생성된모델디렉토리 내의 config.json에서 "output_attentions": true로 바꾸어줌
+
 In convlab/modules/e2e/multiwoz/Transformer/Transformer.py, the Transformer class manages our algorithm.
 
 The weight files we fine-tuned will be downloaded into /models folder when running 
@@ -47,6 +54,11 @@ python run.py submission.json submission${SUBMISSION_NUMBER e.g.4} eval
 ```
 
 If you want to evaluate your own fine-tuned weights, please handle the "model_checkpoint" on the right submission name (e.g. submission4) in 'convlab/spec/submission.json'.
+
+ex)
+```python
+"model_checkpoint": "./runs/학습후생성된디렉토리"
+```
 
 ## Credit
 
