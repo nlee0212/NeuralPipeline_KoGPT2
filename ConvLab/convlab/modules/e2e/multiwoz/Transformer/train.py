@@ -21,8 +21,20 @@ for _ in range(5):
 convlab_path = dirpath
 import sys
 sys.path.append(convlab_path)
-from convlab.modules.e2e.multiwoz.Transformer.pytorch_transformers import GPT2DoubleHeadsModel, GPT2Tokenizer, AdamW
-from convlab.modules.e2e.multiwoz.Transformer.util import get_woz_dataset
+"""from convlab.modules.e2e.multiwoz.Transformer.pytorch_transformers import GPT2DoubleHeadsModel, GPT2Tokenizer, AdamW
+from convlab.modules.e2e.multiwoz.Transformer.util import get_woz_dataset"""
+import argparse
+import gluonnlp as nlp
+import numpy as np
+import pandas as pd
+from gluonnlp.data import SentencepieceTokenizer
+from kogpt2.pytorch_kogpt2 import get_pytorch_kogpt2_model
+from kogpt2.utils import get_tokenizer
+from pytorch_lightning import Trainer
+from pytorch_lightning.callbacks import ModelCheckpoint
+from pytorch_lightning.core.lightning import LightningModule
+from torch.utils.data import DataLoader, Dataset
+from transformers.optimization import AdamW, get_cosine_schedule_with_warmup
 from tqdm import tqdm
 
 CONFIG_NAME = "config.json"
