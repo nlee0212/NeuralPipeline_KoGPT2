@@ -1,4 +1,4 @@
-# NeuralPipeline_DSTC8
+# NeuralPipeline with KoGPT2
 
 Our code is developed on the ConvLab github page (https://github.com/ConvLab/ConvLab).
 
