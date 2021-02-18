@@ -4,10 +4,10 @@ import copy
 import torch
 import torch.nn.functional as F
 import json
-from convlab.modules.e2e.multiwoz.Transformer.train import SPECIAL_TOKENS_V1, SPECIAL_TOKENS_V4,\
-    build_input_from_segments_v1, act_name, slot_name
+from convlab.modules.e2e.multiwoz.Transformer.train import SPECIAL_TOKENS, build_input_from_segments, act_name, slot_name
 from convlab.modules.util.multiwoz.dbquery import query
-from convlab.modules.e2e.multiwoz.Transformer.pytorch_transformers import GPT2DoubleHeadsModel, GPT2Tokenizer
+# from convlab.modules.e2e.multiwoz.Transformer.pytorch_transformers import GPT2DoubleHeadsModel, GPT2Tokenizer
+from kogpt2_transformers import get_kogpt2_model, get_kogpt2_tokenizer
 from convlab.modules.e2e.multiwoz.Transformer.util import download_model_from_googledrive
 from spacy.symbols import ORTH
 from convlab.modules.policy.system.policy import SysPolicy
@@ -79,10 +79,7 @@ class Transformer(SysPolicy):
 
         self.model = model_class.from_pretrained(self.model_checkpoint)
 
-        if 'v1' in self.model_name:
-            self.SPECIAL_TOKENS = SPECIAL_TOKENS_V1
-        else:
-            self.SPECIAL_TOKENS = SPECIAL_TOKENS_V4
+
 
         if "gpt2" in self.model_name:
             self.tokenizer = tokenizer_class.from_pretrained(model_checkpoint, unk_token='<|unkwn|>')

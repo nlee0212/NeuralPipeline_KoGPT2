@@ -92,5 +92,6 @@ def preprocess(trainval):
     print('Done!')
     print('nobook, nooffer : {}'.format(no))
 if __name__ == "__main__":
-    preprocess("val")
-    preprocess("train")
+    #preprocess("val2")
+    #preprocess("train2")
+    preprocess("test2")

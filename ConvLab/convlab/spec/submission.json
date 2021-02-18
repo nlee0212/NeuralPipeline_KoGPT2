@@ -249,7 +249,7 @@
           "model": "gpt2_v4",
           "no_sample": 0,
 	      "top_p": 0.8,
-          "model_checkpoint": "./runs/Jan13_04-38-37_auc-dnn2"
+          "model_checkpoint": "./runs/Feb03_19-09-50_auc-dnn2"
         },
         "action_pdtype": "Argmax",
         "action_policy": "default"

@@ -1,0 +1,1 @@
+temp precipSnow precipRain humidity lightningTF midForc msgcontent sunrise discomfort sunset wspd sunscreen rainTF time skycon pm tmax uv name phone pollen wdirCdn snowTF tmin clothes 

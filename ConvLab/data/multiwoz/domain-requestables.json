@@ -1,0 +1,33 @@
+{
+	"contact": [
+		"phone",
+		"name",
+		"msgcontent"
+	],
+	"schedule": [
+		"time"
+	],
+	"weather": [
+		"temp",
+		"precipSnow",
+		"precipRain",
+		"humidity",
+		"lightningTF",
+		"midForc",
+		"sunrise",
+		"discomfort",
+		"sunset",
+		"wspd",
+		"sunscreen",
+		"rainTF",
+		"skycon",
+		"pm",
+		"tmax",
+		"uv",
+		"pollen",
+		"wdirCdn",
+		"snowTF",
+		"tmin",
+		"clothes"
+	]
+}
