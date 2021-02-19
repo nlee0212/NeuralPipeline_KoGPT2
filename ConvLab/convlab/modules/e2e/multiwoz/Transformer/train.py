@@ -88,17 +88,16 @@ def pad_dataset(dataset, padding=0):
     return dataset
 
 
-def build_input_from_segments(history, reply, tokenizer, dp=[], db=[], lm_labels=False, with_eos=True, model="gpt2",
-                              mode='train'):
+def build_input_from_segments(history, reply, tokenizer, dp=[], lm_labels=False, with_eos=True, model="gpt2", mode='train'):
     """ Build a sequence of input from 3 segments: persona, history and last reply """
-    bos, eos, user, system, dptok, dbtok = tokenizer.convert_tokens_to_ids(SPECIAL_TOKENS[:6])
+    bos, eos, user, system, dptok, pcstok = tokenizer.convert_tokens_to_ids(SPECIAL_TOKENS[:6])
+
     instance = {}
     if mode == 'train':
-        sequence = [[bos]] + history + [[dbtok] + db + [dptok] + dp + [system] + reply + ([eos] if with_eos else [])]
+        sequence = [[bos]] + history + [[dptok] + dp + [system] + reply + ([eos] if with_eos else [])]
     else:
-        sequence = [[bos]] + history + [db + dp + reply + ([eos] if with_eos else [])]
-    sequence = [sequence[0]] + [[user if (len(sequence) - i) % 2 else system] + s for i, s in
-                                enumerate(sequence[1:-1])] + sequence[-1:]
+        sequence = [[bos]] + history + [dp + reply + ([eos] if with_eos else [])]
+    sequence = [sequence[0]] + [[user if (len(sequence)-i) % 2 else system] + s for i, s in enumerate(sequence[1:-1])] + sequence[-1:]
 
     l = len([i for s in sequence for i in s])
 
@@ -106,6 +105,7 @@ def build_input_from_segments(history, reply, tokenizer, dp=[], db=[], lm_labels
         ctx = 1024
     else:
         ctx = 512
+
     if l > ctx:
         i = 1
         while l > ctx:
@@ -113,12 +113,7 @@ def build_input_from_segments(history, reply, tokenizer, dp=[], db=[], lm_labels
             l -= len(d)
 
     instance["input_ids"] = list(chain(*sequence))
-    if mode == 'train':
-        instance["token_type_ids"] = [user if i % 2 else system for i, s in enumerate(sequence[:-1]) for _ in s] + [
-            dbtok] * (len(db) + 1) + [dptok] * (len(dp) + 1) + [system] * (len(reply) + 2)
-    else:
-        instance["token_type_ids"] = [user if i % 2 else system for i, s in enumerate(sequence[:-1]) for _ in s] + [
-            dbtok] * (len(db)) + [dptok] * (len(dp)) + [system] * (len(reply))
+    instance["token_type_ids"] = [user if i % 2 else system for i, s in enumerate(sequence) for _ in s]
     instance["mc_token_ids"] = len(instance["input_ids"]) - 1
     instance["lm_labels"] = [-1] * len(instance["input_ids"])
     if lm_labels:
@@ -147,7 +142,7 @@ def get_data_loaders(args, tokenizer):
                 history = utterance["history"][-(2 * args.max_history + 1):]
                 for j, candidate in enumerate(utterance["candidates"][-num_candidates:]):
                     lm_labels = bool(j == num_candidates - 1)
-                    instance, _ = build_input_from_segments(history, candidate, tokenizer, dp, db, lm_labels,
+                    instance, _ = build_input_from_segments(history, candidate, tokenizer, dp, lm_labels,
                                                             model=args.model_checkpoint)
 
                     ######### check input sequence ##########
