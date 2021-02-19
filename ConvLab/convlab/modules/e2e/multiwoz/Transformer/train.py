@@ -143,7 +143,7 @@ def get_data_loaders(args, tokenizer):
                 dp = utterance["dp"][0]
                 # cs = utterance["cs"]
                 # cs = cs[0] if cs else cs
-                db = utterance["db"][0]
+                # db = utterance["db"][0]
                 history = utterance["history"][-(2 * args.max_history + 1):]
                 for j, candidate in enumerate(utterance["candidates"][-num_candidates:]):
                     lm_labels = bool(j == num_candidates - 1)
@@ -242,17 +242,16 @@ def train():
     optimizer = optimizer_class(model.parameters(), lr=args.lr)
 
     # tokenizer = tokenizer_class.from_pretrained(args.model_checkpoint, unk_token='<|unkwn|>')
-    SPECIAL_TOKENS_DICT = {}
+    SPECIAL_TOKENS_DICT = {'additional_special_tokens':SPECIAL_TOKENS}
 
-
-
-    for st in SPECIAL_TOKENS:
-        SPECIAL_TOKENS_DICT[st] = st
     # tokenizer.add_special_tokens(SPECIAL_TOKENS_DICT)
-    tokenizer.add_tokens(SPECIAL_TOKENS_DICT.values())
-    for key, value in SPECIAL_TOKENS_DICT.items():
-        logger.info("Assigning %s to the %s key of the tokenizer", value, key)
-        setattr(tokenizer, key, value)
+    print("SPECIAL TOKENS")
+    print(SPECIAL_TOKENS)
+    tokenizer.add_special_tokens(SPECIAL_TOKENS_DICT)
+
+    for value in SPECIAL_TOKENS:
+        logger.info("Assigning %s to the %s key of the tokenizer", value, value)
+        setattr(tokenizer, value, value)
     model.resize_token_embeddings(len(tokenizer))
 
     s = ' '.join(act_name) + ' '.join(slot_name)
