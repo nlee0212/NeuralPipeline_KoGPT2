@@ -28,10 +28,11 @@ sys.path.append(convlab_path)
 # from convlab.modules.e2e.multiwoz.Transformer.pytorch_transformers import AdamW
 from transformers.optimization import AdamW
 from convlab.modules.e2e.multiwoz.Transformer.util import get_woz_dataset
+from transformers import GPT2Tokenizer
 from tqdm import tqdm
 
 ## for KoGPT2 ##
-from kogpt2_transformers import get_kogpt2_model, get_kogpt2_tokenizer
+from kogpt2_transformers import get_kogpt2_model
 
 CONFIG_NAME = "config.json"
 WEIGHTS_NAME = "pytorch_model.bin"
@@ -230,6 +231,13 @@ def train():
 
     logger.info("Prepare tokenizer, pretrained model and optimizer - add special tokens for fine-tuning")
     torch.manual_seed(42)
+
+    def get_kogpt2_tokenizer(model_path=None):
+        if not model_path:
+            model_path = 'taeminlee/kogpt2'
+        tokenizer = GPT2Tokenizer.from_pretrained(model_path)
+        return tokenizer
+
     tokenizer = get_kogpt2_tokenizer()
     optimizer_class = AdamW
     model = get_kogpt2_model()
