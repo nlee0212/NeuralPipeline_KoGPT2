@@ -42,17 +42,17 @@ domains = ['contact', 'weather', 'schedule']
 
 dom_name = ['<contact>', '<weather>', '<schedule>']
 
-with open(os.path.join("data/multiwoz/", "domain-requestables.json"), "r", encoding='utf-8') as f:
+with open(os.path.join("data/korean/", "domain-requestables.json"), "r", encoding='utf-8') as f:
     domain_requestable = json.loads(f.read())
 
 for d in domains:
     for r in domain_requestable[d]:
         SPECIAL_TOKENS.append('[' + d + '_' + r + ']')
 
-with open(os.path.join("data/multiwoz/", "slot_list.txt"), "r", encoding='utf-8') as f:
+with open(os.path.join("data/korean/", "slot_list.txt"), "r", encoding='utf-8') as f:
     slot_name = list(f.readline().split(" "))
 
-with open(os.path.join("data/multiwoz/", "act_list.txt"), "r", encoding='utf-8') as f:
+with open(os.path.join("data/korean/", "act_list.txt"), "r", encoding='utf-8') as f:
     act_name = list(f.readline().split(" "))
 
 slot_name.remove('')
@@ -194,7 +194,7 @@ def get_data_loaders(args, tokenizer):
 
 def train():
     parser = ArgumentParser()
-    parser.add_argument("--dataset_path", type=str, default="data/multiwoz/",
+    parser.add_argument("--dataset_path", type=str, default="data/korean/",
                         help="Path or url of the dataset. If empty download from S3.")
     parser.add_argument("--dataset_cache", type=str, default='./dataset_cache', help="Path or url of the dataset cache")
     parser.add_argument("--model_checkpoint", type=str, default="gpt2", help="Path, url or short name of the model")
